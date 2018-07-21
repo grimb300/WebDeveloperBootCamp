@@ -1,0 +1,39 @@
+<% include partials/header %>
+
+<% include partials/search %>
+
+<h1>Search results:</h1>
+<p>Found <%=results.totalResults%> results</p>
+<% if (results.Response === 'True') { %>
+  <ul>
+  <% for (var i=0;i<results.Search.length;i++) { %>
+     <li><%= results.Search[i].Title %> (<%=results.Search[i].Year %>)</li>
+  <% } %>
+  </ul>
+
+  <p>Jump to page: 
+  <% if (page !== 1) { %>
+    <a href='/results?searchString=<%=searchString%>&page=<%=prevPage%>'>Prev</a>
+  <% } else { %>
+    Prev
+  <% } %>
+  <% for (var i = page - 2; i <= page + 2; i++) { %>
+    <% if ((i > 0) && (results.totalResults > (i - 1) * 10)) { %>
+      <% if (i === page) { %>
+        <%=i%>
+      <% } else { %>
+        <a href='/results?searchString=<%=searchString%>&page=<%=i%>'><%=i%></a>
+      <% } %>
+    <% } %>
+  <% } %>
+  <% if (results.totalResults > page * 10) { %>
+    <a href='/results?searchString=<%=searchString%>&page=<%=nextPage%>'>Next</a>
+  <% } else { %>
+    Next
+  <% } %>
+  </p>
+<% } else { %>
+  <p>No results found<\p>
+<% } %>
+
+<% include partials/footer %>
